@@ -45,20 +45,31 @@ st.title("Enhanced Language Translator")
 # User input for text to translate
 text = st.text_area("Enter text to translate")
 
-# Scrollable language selection
+# Scrollable language selection with proper handling of selected values
 source_language = st.multiselect(
     "Select source language", 
     options=language_codes.keys(),
     default=["Auto-Detect"], 
     max_selections=1
-)[0]  # Extract the single selected item
+)
 
 target_language = st.multiselect(
     "Select target language", 
     options=language_codes.keys(),
     default=["English"], 
     max_selections=1
-)[0]  # Extract the single selected item
+)
+
+# Ensure that a language is selected
+if source_language:
+    source_language = source_language[0]  # Get the first selected language
+else:
+    source_language = "Auto-Detect"
+
+if target_language:
+    target_language = target_language[0]  # Get the first selected language
+else:
+    target_language = "English"
 
 # Button for translation and TTS visibility control
 translation_done = False  # Variable to track if translation is done
