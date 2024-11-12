@@ -39,7 +39,8 @@ language_codes = {
 }
 
 # Streamlit app title
-st.title("Enhanced Language Translator")
+st.title("Language Translator")
+st.write("This translator is created by TALHA KHAN")
 
 # User input for text to translate
 text = st.text_area("Enter text to translate")
