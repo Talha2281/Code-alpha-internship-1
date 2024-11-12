@@ -40,14 +40,28 @@ language_codes = {
 }
 
 # Streamlit app title
-st.title("Language Translator")
-st.write("This application is created by TALHA KHAN")
+st.title("Enhanced Language Translator")
+
 # User input for text to translate
 text = st.text_area("Enter text to translate")
 
-# Dropdown for source and target languages
-source_language = st.selectbox("Select source language", options=language_codes.keys())
-target_language = st.selectbox("Select target language", options=language_codes.keys())
+# Scrollable language selection
+source_language = st.multiselect(
+    "Select source language", 
+    options=language_codes.keys(),
+    default=["Auto-Detect"], 
+    max_selections=1
+)[0]  # Extract the single selected item
+
+target_language = st.multiselect(
+    "Select target language", 
+    options=language_codes.keys(),
+    default=["English"], 
+    max_selections=1
+)[0]  # Extract the single selected item
+
+# Button for translation and TTS visibility control
+translation_done = False  # Variable to track if translation is done
 
 # Translate button
 if st.button("Translate"):
@@ -74,6 +88,9 @@ if st.button("Translate"):
                 st.markdown(f"<p class='urdu-text'>{translated_text}</p>", unsafe_allow_html=True)
             else:
                 st.write("Translated Text:", translated_text)
+
+            # Mark translation as done to show TTS and feedback options
+            translation_done = True
 
             # Text-to-Speech for Translated Text
             if st.button("Play Translated Text"):
@@ -106,11 +123,18 @@ if st.button("Translate"):
     else:
         st.warning("Please enter text to translate.")
 
-# Feedback system
-st.subheader("Feedback")
-feedback = st.radio("Was the translation helpful?", ("👍 Yes", "👎 No"))
-if feedback == "👍 Yes":
-    st.write("Thank you for your feedback!")
-elif feedback == "👎 No":
-    st.write("We appreciate your feedback and will work to improve.")
+# Show feedback option only after translation is done
+if translation_done:
+    st.subheader("Feedback")
+    feedback = st.radio("Was the translation helpful?", ("👍 Yes", "👎 No"))
+    if feedback == "👍 Yes":
+        st.write("Thank you for your feedback!")
+    elif feedback == "👎 No":
+        st.write("We appreciate your feedback and will work to improve.")
+    # Hide the feedback options after receiving input
+    translation_done = False
 
+
+        
+             
+   
